@@ -5,7 +5,8 @@ from collections import defaultdict
 
 app = Flask(__name__)
 
-API_KEY = '7d12c60e3cc5308bc0022a60358914db'
+# Removed API Key from code for security
+API_KEY = 'API-KEY-GOES-HERE'
 
 @app.route('/')
 def index():
