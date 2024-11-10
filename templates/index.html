@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather App</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <style>
         /* Basic styling */
         body {
@@ -77,10 +78,59 @@
         button:hover {
             background-color: #0056b3;
         }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.4); /* Black with transparency */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <h1>Weather App</h1>
+
+    <!-- Info Button -->
+    <button id="info-button" onclick="showInfo()" style="display: block; margin: 20px auto;">Info</button>
+
+    <!-- Modal for Description -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeInfo()">&times;</span>
+            <h2>PM Accelerator</h2>
+            <p>PM Accelerator is dedicated to simplifying the hiring process for Product Managers by providing innovative solutions that help PMs effectively showcase their skills, empowering companies to make confident hiring decisions. The company's mission is to make it easier for both Product Managers and hiring companies to find the perfect match every time. Visit the LinkedIn page for more details: <a href="https://www.linkedin.com/company/pm-accelerator" target="_blank">PM Accelerator LinkedIn</a></p>
+        </div>
+    </div>
 
     <!-- Form takes both city name or geolocation -->
     <form id="location-form" action="/weather" method="POST">
@@ -91,43 +141,8 @@
     <button onclick="getWeatherByLocation()">Use My Location</button>
 
     <div id="weather-container">
-
+        <!-- Weather data will be displayed here -->
     </div>
-
-    <script>
-        function getWeatherByLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-
-                    // Set hidden inputs to pass the coordinates
-                    let form = document.getElementById("location-form");
-                    let cityInput = document.getElementById("city-input");
-                    cityInput.value = '';  // Clear the city input
-
-                    // Create hidden inputs for latitude and longitude
-                    let latInput = document.createElement("input");
-                    latInput.type = "hidden";
-                    latInput.name = "latitude";
-                    latInput.value = latitude;
-
-                    let lonInput = document.createElement("input");
-                    lonInput.type = "hidden";
-                    lonInput.name = "longitude";
-                    lonInput.value = longitude;
-
-                    form.appendChild(latInput);
-                    form.appendChild(lonInput);
-
-                    // Submit the form
-                    form.submit();
-                });
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-    </script>
 
     <div class="container">
         <!-- Display current weather data if available -->
@@ -170,6 +185,54 @@
             {% endif %}
         </div>
     </div>
+
+    <script>
+        // Function to show the info modal
+        function showInfo() {
+            document.getElementById("info-modal").style.display = "block";
+        }
+
+        // Function to close the info modal
+        function closeInfo() {
+            document.getElementById("info-modal").style.display = "none";
+        }
+
+        // Function to get weather by geolocation
+        function getWeatherByLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    // Set hidden inputs to pass the coordinates
+                    let form = document.getElementById("location-form");
+                    let cityInput = document.getElementById("city-input");
+
+                    // Create hidden inputs for latitude and longitude
+                    let latInput = document.createElement("input");
+                    latInput.type = "hidden";
+                    latInput.name = "latitude";
+                    latInput.value = latitude;
+
+                    let lonInput = document.createElement("input");
+                    lonInput.type = "hidden";
+                    lonInput.name = "longitude";
+                    lonInput.value = longitude;
+
+                    form.appendChild(latInput);
+                    form.appendChild(lonInput);
+
+                    // Submit the form
+                    form.submit();
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+    </script>
+
+    <!-- Name section -->
+    <p style="text-align: center;">Developed by Arnav Valvekar</p>
 
 </body>
 </html>
