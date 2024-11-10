@@ -6,7 +6,7 @@ from collections import defaultdict
 app = Flask(__name__)
 
 # Removed API Key from code for security
-API_KEY = 'API-KEY-GOES-HERE'
+API_KEY = '7d12c60e3cc5308bc0022a60358914db'
 
 @app.route('/')
 def index():
@@ -14,7 +14,6 @@ def index():
 
 @app.route('/weather', methods=['POST'])
 def weather():
-    # Get the city, latitude, and longitude from the form
     city = request.form.get('city')
     latitude = request.form.get('latitude')
     longitude = request.form.get('longitude')
